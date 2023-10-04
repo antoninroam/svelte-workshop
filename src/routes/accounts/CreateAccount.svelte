@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { createEventDispatcher, tick } from 'svelte';
 
 	let isCreatingAccount = false;
 	let inputRef: HTMLInputElement;
+
+	const dispatch = createEventDispatcher();
 
 	export let accountName = '';
 
@@ -13,7 +15,9 @@
 	};
 	const handleKeyPress = (event: KeyboardEvent) => {
 		if (event.key === 'Enter') {
-			console.log(accountName);
+			dispatch('create', accountName);
+			isCreatingAccount = false;
+			accountName = '';
 		}
 	};
 </script>

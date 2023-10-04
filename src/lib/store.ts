@@ -1,7 +1,4 @@
 import { writable } from 'svelte/store';
+import type { Account } from './types';
 
-interface Account {
-	name: string;
-}
-
-export const accounts = writable<Account[]>([]);
+export const accounts = writable<Account[]>([{ name: 'one' }, { name: 'two' }]);
