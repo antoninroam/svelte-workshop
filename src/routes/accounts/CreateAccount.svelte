@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { createEventDispatcher, tick } from 'svelte';
 
 	let isCreatingAccount = false;
+	let loading = false;
 	let inputRef: HTMLInputElement;
 
 	const dispatch = createEventDispatcher();
@@ -13,24 +15,36 @@
 		await tick();
 		inputRef?.focus();
 	};
-	const handleKeyPress = (event: KeyboardEvent) => {
-		if (event.key === 'Enter') {
-			dispatch('create', accountName);
-			isCreatingAccount = false;
-			accountName = '';
-		}
+
+	const handleSubmit = () => {
+		dispatch('create', accountName);
+		isCreatingAccount = false;
+		accountName = '';
 	};
 </script>
 
 {#if !isCreatingAccount}
 	<button on:click={handleClick}>Create an account</button>
 {:else}
-	<label for="account-name">Account name</label>
-	<input
-		bind:this={inputRef}
-		type="text"
-		id="account-name"
-		on:keypress={handleKeyPress}
-		bind:value={accountName}
-	/>
+	<form
+		method="post"
+		action="?/create"
+		use:enhance={() => {
+			loading = true;
+			return async ({ update }) => {
+				await update();
+				loading = false;
+			};
+		}}
+	>
+		<label for="account-name">Account name</label>
+		<input
+			bind:this={inputRef}
+			name="account-name"
+			type="text"
+			id="account-name"
+			bind:value={accountName}
+		/>
+		<button disabled={loading}>Submit</button>
+	</form>
 {/if}
