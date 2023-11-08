@@ -1,5 +1,5 @@
 import * as db from '$lib/database';
-import { error } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 
 export const load = () => {
 	const accounts = db.getAllAccounts();
@@ -11,9 +11,18 @@ export const load = () => {
 
 export const actions = {
 	create: async ({ request }) => {
-		await new Promise((fulfil) => setTimeout(fulfil, 1000));
+		// await new Promise((fulfil) => setTimeout(fulfil, 1000));
 		const formData = await request.formData();
 		const accountName = formData.get('account-name');
+		const isAgreed = formData.get('is-agreed');
+
+		if (!isAgreed) {
+			return fail(422, {
+				accountName,
+				isAgreed,
+				error: 'You need to agree'
+			});
+		}
 
 		if (typeof accountName === 'string') {
 			db.createAccount({ name: accountName });

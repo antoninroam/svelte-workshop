@@ -8,6 +8,7 @@
 
 	let name = '';
 	export let data;
+	export let form;
 
 	const handleCreate = (event: CustomEvent<string>) => {
 		// accounts.update(() => [...$accounts, { name: event.detail }]);
@@ -27,7 +28,7 @@
 	{/each}
 </ul>
 
-<CreateAccount bind:accountName={name} on:create={handleCreate} />
+<CreateAccount bind:form on:create={handleCreate} />
 
 <style>
 	li {
