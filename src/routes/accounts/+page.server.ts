@@ -1,7 +1,10 @@
 import * as db from '$lib/database';
 import { error, fail } from '@sveltejs/kit';
 
-export const load = () => {
+export const load = async () => {
+	await new Promise((fulfil) => {
+		setTimeout(fulfil, 1000);
+	});
 	const accounts = db.getAllAccounts();
 	// throw error(404, 'Not found');
 	return {

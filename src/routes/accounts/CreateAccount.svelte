@@ -46,25 +46,33 @@
 	<p class="error">{form.error}</p>
 {/if}
 
-{#if !isCreatingAccount}
-	<button on:click={handleClick}>Create an account</button>
-{:else}
-	<form method="post" action="?/create" use:enhance={handleEnhance}>
-		<label for="account-name">Account name</label>
-		<input
-			bind:this={inputRef}
-			name="account-name"
-			type="text"
-			id="account-name"
-			required
-			value={form?.accountName ?? ''}
-		/>
-		<label
-			><input type="checkbox" name="is-agreed" checked={!!form?.isAgreed} /> I agree to everything
-		</label>
-		<div>
-			<button disabled={loading}>Submit</button>
-			<button type="button" on:click={handleClose}>Cancel</button>
-		</div>
-	</form>
-{/if}
+<button class:isCreatingAccount on:click={handleClick}>Create an account</button>
+<form
+	class:isCreatingAccount={!isCreatingAccount}
+	method="post"
+	action="?/create"
+	use:enhance={handleEnhance}
+>
+	<label for="account-name">Account name</label>
+	<input
+		bind:this={inputRef}
+		name="account-name"
+		type="text"
+		id="account-name"
+		required
+		value={form?.accountName ?? ''}
+	/>
+	<label
+		><input type="checkbox" name="is-agreed" checked={!!form?.isAgreed} /> I agree to everything
+	</label>
+	<div>
+		<button disabled={loading}>Submit</button>
+		<button type="button" on:click={handleClose}>Cancel</button>
+	</div>
+</form>
+
+<style>
+	.isCreatingAccount {
+		display: none;
+	}
+</style>

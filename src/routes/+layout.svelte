@@ -4,7 +4,7 @@
 
 <nav>
 	<a href="/">Home</a>
-	<a href="/accounts">Accounts</a>
+	<a href="/accounts" data-sveltekit-preload-code>Accounts</a>
 </nav>
 
 <main class="content">
